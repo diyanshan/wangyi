@@ -1,25 +1,28 @@
-//监听window窗口大小的变化，从而动态改变html根节点的font-size的大小。
-// 达到适配不同设备的效果
-window.onresize = setHtmlFontSize;
-function setHtmlFontSize(){
-  const htmlWidth = document.documentElement.clientWidth || document.body.clientWidth;
-  const htmlDom = document.getElementsByTagName('html')[0];
-  htmlDom.style.fontSize = htmlWidth / 10 + 'px';
-};
-setHtmlFontSize();
-
 import Vue from 'vue'
 import App from './App'
-import router from './router'
 import 'lib-flexible/flexible.js'
+import router from './router'
+import store from './store/index.js'
+import Split from'./components/Split/Split.vue'
+import VueLazyload from 'vue-lazyload'
+import loading from './common/img/loading.gif'
 
+//图片懒加载
+Vue.use(VueLazyload, {
+  loading
+})
 
 Vue.config.productionTip = false
+
+
+//注册为全局组件
+Vue.component('Split',Split)
 
 
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
