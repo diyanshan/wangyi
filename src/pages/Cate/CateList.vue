@@ -1,41 +1,41 @@
 <template>
-  <div class="scroll-wrapper" v-if="categoryL2">
-    <div class="scroll">
-      <div class="banner">
-        <img v-lazy="categoryL2.wapBannerUrl" alt="">
-      </div>
-      <div class="cateList">
-        <ul class="list">
-          <li class="item" v-for="(subCate, index) in categoryL2.subCateList" :key="index">
-            <div class="img-wrapper">
-              <img v-lazy="subCate.wapBannerUrl" alt="">
-            </div>
-            <div class="name">{{subCate.name}}</div>
-          </li>
-        </ul>
+  <div>
+    <div class="scroll-wrapper" v-if="categoryL2">
+      <div class="scroll">
+        <div class="banner">
+          <img v-lazy="categoryL2.bannerUrl" :key='categoryL2.bannerUrl' alt="">
+        </div>
+        <div class="cateList">
+          <ul class="list">
+            <li class="item" v-for="(subCate, index) in categoryL2.subCateList" :key="index">
+              <div class="img-wrapper">
+                <img v-lazy="subCate.wapBannerUrl" :key='subCate.wapBannerUrl' alt="">
+              </div>
+              <div class="name">{{subCate.name}}</div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
   import cateList from '../../mock/cateList.json'
   import BScroll from 'better-scroll'
     export default {
+
       mounted(){
-        // console.log(this.$route.query.categoryId)
-        const data =  cateList.find((item) => item.id === this.$route.query.categoryId*1)
-        // console.log(this.$route.query.categoryId,'this.$store.query.categoryId')
-        console.log(data.subCateList,'subCateList',this.$route.query.categoryId)
-        // console.log(cateList)
-
-
       },
+      // beforeUpdate(){
+      //   const data =  cateList.find((item) => item.id === this.$route.query.categoryId*1)
+      //   console.log(data.subCateList,'subCateList',this.$route.query.categoryId)
+      // },
       computed: {
         categoryL2() {
-          this.$nextTick(() => {
             if (cateList) {
-              const result =  cateList.find((item) => item.id === this.$route.query.categoryId)
+              const result =  cateList.find((item) => item.id === this.$route.query.categoryId*1)
               if (!result)  {
                 return cateList[0]
               } else {
@@ -43,17 +43,21 @@
                 return result
               }
             }
-          })
         }
+
       },
       watch:{
         categoryL2(){
           this.$nextTick(() => {
             if (!this.scroll) {
               this.scroll = new BScroll('.scroll-wrapper', {
+                probeType : 2,
                 click: true,
                 bounceTime: 800
               })
+              console.log(this.scroll,'this.scroll')
+            } else {
+              this.scroll.refresh();
             }
           })
         }

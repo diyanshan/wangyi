@@ -1,39 +1,19 @@
 <template>
-    <div>
-      <!-- 首页头部  -->
-      <header id="header-wrap">
-        <div class="header">
-          <h1 id="logo"></h1>
-          <div class="topSearchIpt" @click="$router.push('/search')">
-            <i class="icon-search"></i>
-            <span class="placeholder">搜索商品, 共19966款好物</span>
-          </div>
-          <div class="loginBtn" @click="$router.push('/login')">登录</div>
+  <div>
+    <!-- 首页头部  -->
+    <header id="header-wrap">
+      <div class="header">
+        <h1 id="logo"></h1>
+        <div class="topSearchIpt" @click="$router.push('/search')">
+          <i class="icon-search"></i>
+          <span class="placeholder">搜索商品, 共19966款好物</span>
         </div>
-        <div class="header-nav-wrap">
-          <!-- 滚动导航  -->
-          <div class="header-nav-some-wrap" v-show="!isShowAllCate">
-            <div class="header-nav-some" v-if="categories.kingKongModule">
-              <a href="javascript:;" class="active">
-                <span>推荐</span>
-              </a>
-              <a href="javascript:;" v-for="(kingKong, index) in categories.kingKongModule.kingKongList" :key="index">
-                <span>{{kingKong.text}}</span>
-              </a>
-            </div>
-          </div>
-          <!--全部频道-->
-          <div class="allCate" v-show="isShowAllCate">
-            <span>全部频道</span>
-          </div>
-          <!--切换按钮-->
-          <div class="toggle-nav" :class="{toggle: isShowAllCate}" @click.prevent="toggleShowCate">
-            <div class="icon"></div>
-          </div>
-        </div>
-        <!-- 全部导航 -->
-        <div class="header-nav-all" v-show="isShowAllCate">
-          <div class="moreCate" v-if="categories.kingKongModule">
+        <div class="loginBtn" @click="$router.push('/login')">登录</div>
+      </div>
+      <div class="header-nav-wrap">
+        <!-- 滚动导航  -->
+        <div class="header-nav-some-wrap" v-show="!isShowAllCate">
+          <div class="header-nav-some" v-if="categories.kingKongModule">
             <a href="javascript:;" class="active">
               <span>推荐</span>
             </a>
@@ -42,10 +22,30 @@
             </a>
           </div>
         </div>
-      </header>
-
-      <!--//首页内容-->
-      <div class="content">
+        <!--全部频道-->
+        <div class="allCate" v-show="isShowAllCate">
+          <span>全部频道</span>
+        </div>
+        <!--切换按钮-->
+        <div class="toggle-nav" :class="{toggle: isShowAllCate}" @click.prevent="toggleShowCate">
+          <div class="icon"></div>
+        </div>
+      </div>
+      <!-- 全部导航 -->
+      <div class="header-nav-all" v-show="isShowAllCate">
+        <div class="moreCate" v-if="categories.kingKongModule">
+          <a href="javascript:;" class="active">
+            <span>推荐</span>
+          </a>
+          <a href="javascript:;" v-for="(kingKong, index) in categories.kingKongModule.kingKongList" :key="index">
+            <span>{{kingKong.text}}</span>
+          </a>
+        </div>
+      </div>
+    </header>
+    <!--//首页内容-->
+    <div class="content">
+      <div class="content-scroll">
         <!--遮罩层-->
         <div class="mask" v-show="isShowAllCate" @touchmove.prevent></div>
         <!-- 首页轮播图 -->
@@ -135,6 +135,8 @@
           </li>
         </ul>
 
+
+
         <!--私人定制-->
         <div class="personalShop">
           <div class="personalShop-title">私人订制</div>
@@ -142,6 +144,7 @@
             <div class="swiper-container">
               <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(personalShop, index) in personalShopArr" :key="index">
+
                   <div class="personalShop-item" v-for="(good ,index) in personalShop" :key="index">
                     <img class="primaryPic" v-lazy="good.primaryPicUrl" alt="">
                     <div class="text">
@@ -149,7 +152,10 @@
                       <span class="price">¥{{good.retailPrice}}</span>
                     </div>
                   </div>
+
                 </div>
+
+
               </div>
               <!-- 分页器 -->
               <div class="swiper-pagination"></div>
@@ -163,11 +169,11 @@
           <div class="timeToBuy-header">
             <span class="timeToBuy-title">限时购</span>
             <div class="countDown">
-              <span class="hour">03</span>
+              <span class="hour">{{h}}</span>
               <span class="colon">:</span>
-              <span class="minutes">04</span>
+              <span class="minutes">{{m}}</span>
               <span class="colon">:</span>
-              <span class="seconds">05</span>
+              <span class="seconds">{{s}}</span>
             </div>
             <span class="more">更多></span>
           </div>
@@ -191,8 +197,8 @@
             <li class="newGoods-good" v-for="(newItem, index) in categories.newItemList" v-if="index < 6" :key="index">
               <img class="primaryPic" v-lazy="newItem.primaryPicUrl" alt="">
               <div class="text">
-              <span
-                class="name">{{newItem.name.length > 14 ? (newItem.name.slice(0, 14) + '...') : newItem.name}}</span>
+            <span
+              class="name">{{newItem.name.length > 14 ? (newItem.name.slice(0, 14) + '...') : newItem.name}}</span>
                 <span class="price">¥{{newItem.retailPrice}}</span>
               </div>
             </li>
@@ -298,6 +304,8 @@
         </div>
       </div>
     </div>
+  </div>
+
 </template>
 
 <script>
@@ -305,42 +313,122 @@
   import Category from '../../components/Category/Category.vue'
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
+  import BScroll from 'better-scroll'
     export default {
       data(){
         return{
           isShowAllCate:false,
-          categories:[]
+          categories:[],
+          h:'',
+          m:'',
+          s:''
         }
       },
       mounted(){
         setTimeout(() => {
           this.categories = categories
           // console.log(this.categories)
-        },1000),
-
-      this.banner =  new Swiper('.swiper-container-banner', {
-          pagination: {
-            el: '.swiper-pagination',
-          },
-          loop: true
-        }),
-      this.container = new Swiper('.swiper-container', {
-        pagination: {
-          el: '.swiper-pagination',
-        },
-        loop: true
-      })
+        },20)
       },
       methods:{
         toggleShowCate(){
           console.log(this.categories.personalShop)
           this.isShowAllCate = !this.isShowAllCate
+        },
+        initSwiper(){
+          this.banner =  new Swiper('.swiper-container-banner', {
+              pagination: {
+              el: '.swiper-pagination',
+              // 自定义分页器，必须的type类型
+              type: 'custom',
+              renderCustom: function(swiper, current, total){
+                var paginationHtml = "";
+                for(var i= 0; i< total; i++) {
+                  // 判断是不是激活焦点，是的话添加active类，不是就只添加基本样式类
+                  if(i === (current -1)){
+                    paginationHtml += '<span class="swiper-pagination-customs swiper-pagination-customs-activ"></span>';
+                  }else {
+                    paginationHtml += '<span class="swiper-pagination-customs"></span>';
+                  }
+                }
+                return paginationHtml;
+              }
+            },
+            loop: true,
+            observer: true,//修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true, //修改swiper的父元素时，自动初始化swiper
+          }),
+          this.container = new Swiper('.personalShop-carousel .swiper-container', {
+            pagination: {
+              el: '.swiper-pagination',
+            },
+            loop: true
+          })
+        },
+        initScroll(){
+          this.scroll = new BScroll('.content',{
+             scrollY: true,
+             click: true
+          })
+          this.scrollHeader = new BScroll('.header-nav-some-wrap',{
+            scrollX:true,
+            click: true
+          })
+        },
+        countTime(){
+          //获取当前时间
+          var date = new Date();
+          var now = date.getTime();
+          //设置截止时间
+          var endDate = new Date("2019-5-22 23:23:23");
+          var end = endDate.getTime();
+          //时间差
+          var leftTime = end - now;
+          //定义变量 d,h,m,s保存倒计时的时间
+          if (leftTime >= 0) {
+            d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+            this.h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+            this.m = Math.floor(leftTime / 1000 / 60 % 60);
+            this.s = Math.floor(leftTime / 1000 % 60);
+          }
+          console.log(this.s);
+          //递归每秒调用countTime方法，显示动态时间效果
+          setTimeout(this.countTime, 1000);
         }
       },
       computed:{
         personalShopArr(){
-           return this.categories.personalShop
+           const {categories} = this
+          //看属性下的categories.personalShop有值
+          if (categories.personalShop) {
+            const personalShop = categories.personalShop
+            const len = personalShop.length;
+            let size = 3;
+            let resultArr = [];
+            // 加工让文字显示省略号
+
+            personalShop.forEach(item => {
+              if (item.name.length >= 13) {
+                item.name = item.name.slice(0, 13) + '...'
+              }
+            })
+            // 按照指定大小切割数组 每size个切割成一个新数组
+            for (var i = 0; i < len; i += size) {
+              var result = personalShop.slice(i, i + size)
+              resultArr.push(result)
+            }
+            return resultArr;
+          }
         }
+      },
+      watch:{
+        personalShopArr(){
+          this.$nextTick(() => {
+            this.initSwiper()
+            this. initScroll()
+          })
+        }
+
       },
       components:{
         Category
@@ -349,7 +437,8 @@
     }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
+<style lang="stylus" rel="stylesheet/stylus"
+>
   @import "../../common/stylus/mixins.styl"
   #header-wrap
     width: 100%
@@ -506,10 +595,13 @@
 
   // 内容区
   .content
+    height: 1100px;
+    width:  100%
     position: relative
     left 0
     top 2rem
     padding-bottom 1.30667rem
+    overflow hidden
     // 去除横向滚动条
     overflow-x hidden
 
@@ -532,15 +624,25 @@
         width: 100%
 
       .swiper-pagination
-        width: 100%
         height: 10px
+        width: 100%;
         /*包裹自定义分页器的div的位置等CSS样式*/
-
         &.swiper-pagination-custom
-          bottom: 10px;
-          left: 0;
           width: 100%;
-          height: 100px
+          height: 8px;
+          margin-bottom 50px
+          .swiper-pagination-customs
+            width: 30px;
+            bottom: -20px
+            height: 3px;
+            display: inline-block;
+            background: #fff;
+            margin: 0 10px 50px;
+            &.swiper-pagination-customs-activ
+              background: #000;
+
+
+
 
     .slogon
       width: 100%
@@ -1099,16 +1201,16 @@
 
     // footer版权
     .ftWrap
-      border-top: 1px solid rgba(0,0,0,.15);
       background-color: #414141;
       .ftContent
         text-align: center;
-        padding: .22rem .26667rem .37333rem;
-        width: 10rem;
-        margin-right: auto;
-        margin-left: auto;
+        width:100%
+        height: 300px
+        padding-top: 50px
+
         .bd
           .goApp
+            margin-top 10px
             margin-right: .66667rem;
             padding 0.23333rem 0.53333rem
             width: 2.29333rem;

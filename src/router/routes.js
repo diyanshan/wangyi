@@ -17,8 +17,10 @@ export default [
   {
     path: '/cate',
     component: Cate,
+    redirect: '/cate/cateList',
     children: [
       {
+        name: 'cateList',
         path: '/cate/cateList',
         component: CateList,
       }

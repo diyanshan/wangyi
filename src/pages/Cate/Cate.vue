@@ -10,17 +10,17 @@
     <!-- 分类内容 -->
     <div class="content">
       <div class="cateListNav-wrapper">
-        <ul class="cateListNav">
-          <li class="cateListItem"
-              :class="categoryItem.id === Number($route.query.categoryId) ? 'active' : ''"
-              v-for="(categoryItem, index) in cateList"
-              :key="index">
-            <router-link :to="`/cate/cateList?categoryId=${categoryItem.id}`">
-              <span>{{categoryItem.name}}</span>
-            </router-link>
-          </li>
-        </ul>
-      </div>
+          <ul class="cateListNav">
+            <li class="cateListItem"
+                :class="categoryItem.id === Number($route.query.categoryId) ? 'active' : ''"
+                v-for="(categoryItem, index) in cateList"
+                :key="index">
+              <router-link :to="`/cate/cateList?categoryId=${categoryItem.id}`">
+                <span>{{categoryItem.name}}</span>
+              </router-link>
+            </li>
+          </ul>
+        </div>
       <div class="cateListContent-wrapper">
         <RouterView/>
       </div>
@@ -30,19 +30,25 @@
 
 <script>
   import cateList from '../../mock/cateList.json'
+  import BScroll from 'better-scroll'
     export default {
         data(){
           return{
-
-          }
-        },
-        computed:{
-          cateList(){
-            return cateList
+            cateList:[]
           }
         },
         mounted(){
-           // console.log(cateList)
+          setTimeout(() => {
+            this.cateList = cateList
+          },1000),
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll('.cateListNav-wrapper', {
+                click: true,
+                bounceTime: 800
+              })
+            }
+          })
         },
         name: "Cate"
     }
@@ -89,26 +95,28 @@
 
   .content
     padding-top 1rem
+    width 750px
+    height 1250px
 
     .cateListNav-wrapper
       right-border-1px(#d9d9d9)
       float left
       width: 2.16rem
       height 15rem
+      overflow hidden
       .cateListNav
         width: 100%
-
         .cateListItem
           position relative
           width: 100%;
-          height: .66667rem;
+          height: 1rem;
           margin-top: .53333rem;
           text-align: center;
           border: none;
           display: block;
           color: #333;
           font-size: .37333rem;
-          line-height: .66667rem;
+          line-height: 100px;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
