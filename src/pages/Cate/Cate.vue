@@ -8,7 +8,7 @@
       </div>
     </div>
     <!-- 分类内容 -->
-    <div class="content">
+    <div class="content2">
       <div class="cateListNav-wrapper">
           <ul class="cateListNav">
             <li class="cateListItem"
@@ -93,7 +93,7 @@
       .search-info
         color #666
 
-  .content
+  .content2
     padding-top 1rem
     width 750px
     height 1250px

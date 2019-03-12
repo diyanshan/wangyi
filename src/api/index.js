@@ -5,7 +5,7 @@ import ajax from './ajax.js'
 const prefix = '/api'
 
 
-// http://m.you.163.com/topic/v1/find/recAuto.json
+// http://m.you.163.com/xhr/search/init.json
 //
 //cate
 
@@ -44,3 +44,5 @@ export const reqAutoRecommendData = (page, size, exceptIds = '6409,6201,6408,641
 
 
 //search
+// 获取搜索组件初始化数据
+export const reqInitSearch = () => ajax(`${prefix}/xhr/search/init.json`, 'POST')

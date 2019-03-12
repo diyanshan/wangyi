@@ -47,7 +47,7 @@
     <div class="content">
       <div class="content-scroll">
         <!--遮罩层-->
-        <div class="mask" v-show="isShowAllCate" @touchmove.prevent></div>
+        <div class="mask" v-show="isShowAllCate" @touchstart.stop></div>
         <!-- 首页轮播图 -->
         <div class="swiper-container-banner">
           <div class="swiper-wrapper">
@@ -146,7 +146,7 @@
                 <div class="swiper-slide" v-for="(personalShop, index) in personalShopArr" :key="index">
 
                   <div class="personalShop-item" v-for="(good ,index) in personalShop" :key="index">
-                    <img class="primaryPic" v-lazy="good.primaryPicUrl" alt="">
+                    <img class="primaryPic" v-lazy="good.primaryPicUrl" :key="good.primaryPicUrl" alt="">
                     <div class="text">
                       <span class="name">{{good.name}}</span>
                       <span class="price">¥{{good.retailPrice}}</span>
@@ -324,17 +324,25 @@
           s:''
         }
       },
+      created() {
+        this.countTime()
+      },
       mounted(){
         setTimeout(() => {
           this.categories = categories
           // console.log(this.categories)
         },20)
+        // this.$nextTick(() => {
+        //   initScroll()
+        // })
+
       },
       methods:{
         toggleShowCate(){
           console.log(this.categories.personalShop)
           this.isShowAllCate = !this.isShowAllCate
         },
+        //header轮播图  自定义分页器
         initSwiper(){
           this.banner =  new Swiper('.swiper-container-banner', {
               pagination: {
@@ -357,43 +365,58 @@
             loop: true,
             observer: true,//修改swiper自己或子元素时，自动初始化swiper
             observeParents: true, //修改swiper的父元素时，自动初始化swiper
-          }),
-          this.container = new Swiper('.personalShop-carousel .swiper-container', {
-            pagination: {
-              el: '.swiper-pagination',
-            },
-            loop: true
           })
+
+          //私人订制轮播图
+
+          this.container = new Swiper('.personalShop-carousel .swiper-container', {
+              observer:true,//修改swiper自己或子元素时，自动初始化swiper
+              observeParents:true,//修改swiper的父元素时，自动初始化swiper
+              pagination: {
+                el: '.swiper-pagination',
+              },
+              loop: true
+            })
+
+
+
         },
+        //页面整体滑动
         initScroll(){
           this.scroll = new BScroll('.content',{
              scrollY: true,
              click: true
           })
+          //
           this.scrollHeader = new BScroll('.header-nav-some-wrap',{
             scrollX:true,
             click: true
           })
         },
+
+        //限时购倒计时
         countTime(){
           //获取当前时间
-          var date = new Date();
-          var now = date.getTime();
+          let date = new Date();
+          let now = date.getTime();
           //设置截止时间
-          var endDate = new Date("2019-5-22 23:23:23");
-          var end = endDate.getTime();
+          let endDate = new Date("2019-3-12 23:23:23");
+          let end = endDate.getTime();
           //时间差
-          var leftTime = end - now;
+          let leftTime = end - now;
           //定义变量 d,h,m,s保存倒计时的时间
           if (leftTime >= 0) {
-            d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+            let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
             this.h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
             this.m = Math.floor(leftTime / 1000 / 60 % 60);
             this.s = Math.floor(leftTime / 1000 % 60);
           }
-          console.log(this.s);
+          // console.log(this.s);
           //递归每秒调用countTime方法，显示动态时间效果
-          setTimeout(this.countTime, 1000);
+          this.intervalId = setTimeout(this.countTime, 1000);
+          if (leftTime =0 ) {
+            clearTimeout(this.intervalId)
+          }
         }
       },
       computed:{
@@ -437,8 +460,7 @@
     }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus"
->
+<style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixins.styl"
   #header-wrap
     width: 100%

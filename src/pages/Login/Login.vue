@@ -27,7 +27,7 @@
         <i class="iconfont icon-shouji"></i>
         <span>手机号码登录</span>
       </div>
-      <div class="login-email">
+      <div class="login-email" @click="$router.replace('/login/email')">
         <i class="iconfont icon-youxiang"></i>
         <span>邮箱帐号登录</span>
       </div>

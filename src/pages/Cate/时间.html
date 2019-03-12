@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+  let date = new Date();
+  console.log(date,'date')
+  let now = date.getTime()
+  console.log(now,'now')
+  let endDate = new Date("2019-5-22 23:23:23");
+  console.log(endDate,'endDate')
+  let end = endDate.getTime()
+  console.log(end,'end')
+  let leftTime = end - now;
+  if (leftTime >= 0) {
+
+    this.h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+    this.m = Math.floor(leftTime / 1000 / 60 % 60);
+    this.s = Math.floor(leftTime / 1000 % 60);
+  }
+  console.log(this.h);
+  console.log(this.m);
+  console.log(this.s);
+	</script>
+</body>
+</html>

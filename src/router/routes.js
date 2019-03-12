@@ -7,6 +7,9 @@ import Login from '../pages/Login/Login.vue'
 import Search from '../pages/Search/Search.vue'
 import Tab from '../pages/Topic/Tab.vue'
 import CateList from  '../pages/Cate/CateList.vue'
+import Phone from  '../pages/Login/Phone.vue'
+import EmailLogin from  '../pages/Login/EmailLogin.vue'
+import Register from  '../pages/Login/Register.vue'
 
 
 export default [
@@ -46,7 +49,23 @@ export default [
   {
     path: '/login',
     component: Login,
-    meta:true
+    children:[
+      {
+        path: '/login/phone',
+        component: Phone,
+      },
+      {
+        path: '/login/email',
+        component: EmailLogin
+      },
+      {
+        path: '/login/register',
+        component: Register
+      }
+    ],
+    meta:{
+      isShow:true
+    }
   },
   {
     path: '/search',

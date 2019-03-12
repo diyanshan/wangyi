@@ -1,5 +1,5 @@
 <template>
-  <footer id="footer-wrap">
+  <footer id="footer-wrap" v-show="!$route.meta.isShow">
     <ul class="footer">
       <li class="item" :class="{active: $route.path === '/'}" @click="goTo('/')">
         <i class="u-icon" :class="$route.path === '/' ? 'u-icon-tabBar-index-active' : 'u-icon-tabBar-index'"></i>

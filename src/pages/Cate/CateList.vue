@@ -27,6 +27,15 @@
     export default {
 
       mounted(){
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll('.scroll-wrapper', {
+              click: true
+            })
+          } else {
+            this.scroll.refresh();
+          }
+        })
       },
       // beforeUpdate(){
       //   const data =  cateList.find((item) => item.id === this.$route.query.categoryId*1)
@@ -45,22 +54,6 @@
             }
         }
 
-      },
-      watch:{
-        categoryL2(){
-          this.$nextTick(() => {
-            if (!this.scroll) {
-              this.scroll = new BScroll('.scroll-wrapper', {
-                probeType : 2,
-                click: true,
-                bounceTime: 800
-              })
-              console.log(this.scroll,'this.scroll')
-            } else {
-              this.scroll.refresh();
-            }
-          })
-        }
       },
       name: "CateList"
     }

@@ -13,7 +13,7 @@
       <div class="cart-img"></div>
       <div class="goLogin">
         <div class="hint">去添加点什么吧</div>
-        <div class="loginBtn">登录</div>
+        <div class="loginBtn" @click="$router.push(`/login`)">登录</div>
       </div>
     </div>
   </div>
